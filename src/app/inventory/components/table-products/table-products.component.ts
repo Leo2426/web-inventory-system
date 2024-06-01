@@ -1,50 +1,47 @@
-import { Component } from '@angular/core';
-import {SharedModule} from "primeng/api";
+import {Component, input, OnInit} from '@angular/core';
 import {TableModule} from "primeng/table";
 import {ButtonModule} from "primeng/button";
+import {ToastModule} from "primeng/toast";
 import {RippleModule} from "primeng/ripple";
-
+import {MessageService} from "primeng/api";
+import {DialogModule} from "primeng/dialog";
+import {ChipsModule} from "primeng/chips";
+import {Product} from "../../model/product";
 @Component({
   selector: 'app-table-products',
   standalone: true,
   imports: [
-    SharedModule,
     TableModule,
     ButtonModule,
-    RippleModule
+    ToastModule,
+    RippleModule,
+    DialogModule,
+    ChipsModule
   ],
   templateUrl: './table-products.component.html',
   styleUrl: './table-products.component.css'
 })
-export class TableProductsComponent {
-  products: {}[] = [
-    {
-      id: '1',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-    },
-    {
-      id: '2',
-      code: 'f230fh0g3',
-      name: 'T-shirt',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-    }
-  ]
+export class TableProductsComponent implements OnInit{
+  products = input.required<Product[]>()
 
-  selectProduct(product: any) {
-    alert(product.name)
+
+  visibleEditForm: boolean = false;
+  visibleAddForm: boolean = false;
+  selectedProduct: any = {}
+  ngOnInit() {
+  }
+
+
+  constructor(private messageService: MessageService) {
+  }
+
+
+  editProduct(product: any) {
+    this.visibleEditForm = true;
+    this.selectedProduct = product
+  }
+
+  deleteProduct(product: any) {
+
   }
 }
