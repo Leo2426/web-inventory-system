@@ -6,9 +6,10 @@
     class="mb-5"
     (click)="visibleAddForm = true"/>
 
+
   <p-table
     [rowHover]="true"
-    [value]="products()" [tableStyle]="{ 'min-width': '50rem' }"
+    [value]="products" [tableStyle]="{ 'min-width': '50rem' }"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -38,7 +39,7 @@
           <p-button
             severity="primary"
             icon="pi pi-pencil"
-            (click)="editProduct(product)">
+            (click)="onEditProduct(product)">
           </p-button>
         </td>
 
@@ -46,7 +47,7 @@
           <p-button
             severity="danger"
             icon="pi pi-minus"
-            (click)="deleteProduct(product)">
+            (click)="deleteProduct(product.id)">
           </p-button>
         </td>
 
@@ -59,70 +60,70 @@
   <p-dialog header="Edit Product {{selectedProduct.name}} " [modal]="true" [(visible)]="visibleEditForm" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mt-2 mb-5">
       <label for="unitPrice" class="font-semibold w-6rem">Unit Price</label>
-      <input [value]="selectedProduct.unitPrice" pInputText id="unitPrice" class="flex-auto" autocomplete="off" />
+      <input  [(ngModel)]="productToEdit.unitPrice" [value]="selectedProduct.unitPrice" pInputText id="unitPrice" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="realPrice" class="font-semibold w-6rem">Real Price</label>
-      <input [value]="selectedProduct.realPrice" pInputText id="realPrice" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToEdit.realPrice" [value]="selectedProduct.realPrice" pInputText id="realPrice" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="discount" class="font-semibold w-6rem">Discount</label>
-      <input [value]="selectedProduct.discount" pInputText id="discount" class="flex-auto" autocomplete="off" />
+      <input  [(ngModel)]="productToEdit.discount" [value]="selectedProduct.discount" pInputText id="discount" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="stock" class="font-semibold w-6rem">Stock</label>
-      <input [value]="selectedProduct.stock" pInputText id="stock" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToEdit.stock" [value]="selectedProduct.stock" pInputText id="stock" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="currentStock" class="font-semibold w-6rem">Current Stock</label>
-      <input [value]="selectedProduct.currentStock" pInputText id="currentStock" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToEdit.currentStock" [value]="selectedProduct.currentStock" pInputText id="currentStock" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex justify-content-end gap-2">
       <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
-      <p-button label="Save" (click)="visibleEditForm = false" />
+      <p-button label="Save" (click)="updateProduct()" />
     </div>
   </p-dialog>
 
-  <!--  Formulario para editar el producto -->
+  <!--  Formulario para agregar un producto -->
   <p-dialog header="Add Product" [modal]="true" [(visible)]="visibleAddForm" [style]="{ width: '25rem' }">
     <div class="flex align-items-center gap-3 mt-2 mb-5">
       <label for="name" class="font-semibold w-6rem">Name</label>
-      <input pInputText id="name" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.name" pInputText id="name" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mt-2 mb-5">
       <label for="unitPrice" class="font-semibold w-6rem">Unit Price</label>
-      <input [value]="selectedProduct.name" pInputText id="asd" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.unitPrice" pInputText id="asd" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="realPrice" class="font-semibold w-6rem">Real Price</label>
-      <input [value]="selectedProduct.name" pInputText id="1d12" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.realPrice" pInputText id="1d12" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="discount" class="font-semibold w-6rem">Discount</label>
-      <input [value]="selectedProduct.name" pInputText id="12d" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.discount" pInputText id="12d" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="stock" class="font-semibold w-6rem">Initial Stock</label>
-      <input [value]="selectedProduct.name" pInputText id="asdsd" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.stock" pInputText id="asdsd" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex align-items-center gap-3 mb-5">
       <label for="currentStock" class="font-semibold w-6rem">Actual Stock</label>
-      <input [value]="selectedProduct.name" pInputText id="asdasd" class="flex-auto" autocomplete="off" />
+      <input [(ngModel)]="productToAdd.currentStock" pInputText id="asdasd" class="flex-auto" autocomplete="off" />
     </div>
 
     <div class="flex justify-content-end gap-2">
       <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
-      <p-button label="Save" (click)="visibleEditForm = false" />
+      <p-button label="Save" (click)="addProduct()" />
     </div>
   </p-dialog>
 

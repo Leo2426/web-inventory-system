@@ -14,24 +14,5 @@ import {TableProductsComponent} from "../../components/table-products/table-prod
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css'
 })
-export class InventoryComponent implements OnInit{
-
-  products: Product[] = [] as Product[]
-  product: Product = {} as Product
-
-  constructor( private ProductService: ProductsService) {
-  }
-
-    ngOnInit(): void {
-      this.getAllProducts();
-    }
-
-    private getAllProducts() {
-        this.ProductService.getAll().subscribe((response: any) => {
-          this.products = response;
-        });
-      }
-
-
-
+export class InventoryComponent{
 }

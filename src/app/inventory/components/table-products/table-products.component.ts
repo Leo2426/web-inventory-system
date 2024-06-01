@@ -1,4 +1,4 @@
-import {Component, input, OnInit} from '@angular/core';
+import {Component, contentChild, input, OnInit, viewChild} from '@angular/core';
 import {TableModule} from "primeng/table";
 import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
@@ -7,6 +7,8 @@ import {MessageService} from "primeng/api";
 import {DialogModule} from "primeng/dialog";
 import {ChipsModule} from "primeng/chips";
 import {Product} from "../../model/product";
+import {FormsModule} from "@angular/forms";
+import {ProductsService} from "../../services/products.service";
 @Component({
   selector: 'app-table-products',
   standalone: true,
@@ -16,32 +18,75 @@ import {Product} from "../../model/product";
     ToastModule,
     RippleModule,
     DialogModule,
-    ChipsModule
+    ChipsModule,
+    FormsModule
   ],
   templateUrl: './table-products.component.html',
   styleUrl: './table-products.component.css'
 })
 export class TableProductsComponent implements OnInit{
-  products = input.required<Product[]>()
-
-
+  products: Product[] = [];
   visibleEditForm: boolean = false;
   visibleAddForm: boolean = false;
-  selectedProduct: any = {}
+  selectedProduct: Product = {} as Product;
+  productToAdd: Product;
+  productToEdit: Product = {} as Product;
   ngOnInit() {
+    this.getAllProducts();
   }
 
 
-  constructor(private messageService: MessageService) {
+  constructor(private productService: ProductsService ,  private messageService: MessageService) {
+    this.productToAdd = {
+      name: '',
+      unitPrice: 0,
+      realPrice: 0,
+      stock: 0,
+      currentStock: 0,
+      userId: 1,
+    };
+  }
+
+  deleteProduct(id: number) {
+    this.productService.delete(id).subscribe(() => {
+      this.products = this.products.filter((product) => product.id !== id);
+    });
+  }
+
+  updateProduct() {
+    this.productService.update(this.productToEdit.id, this.productToEdit).subscribe((response: any) => {
+       this.products = this.products.map((product) => {
+        if (product.id === response.id) {
+          product = response;
+        }
+        return product;
+
+      });
+        console.log(response);
+    });
+
+    this.visibleEditForm = false;
+  }
+
+  addProduct() {
+    this.productService.create(this.productToAdd).subscribe((response: any) => {
+      console.log(response);
+      this.products.push(response);
+    });
+    this.visibleAddForm = false;
   }
 
 
-  editProduct(product: any) {
+  private getAllProducts() {
+    this.productService.getAll().subscribe((response: any) => {
+      this.products = response;
+    });
+  }
+
+  onEditProduct(product: Product) {
+    this.selectedProduct = product;
+    this.productToEdit = {...product};
     this.visibleEditForm = true;
-    this.selectedProduct = product
   }
 
-  deleteProduct(product: any) {
-
-  }
 }
