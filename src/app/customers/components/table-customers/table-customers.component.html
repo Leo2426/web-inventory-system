@@ -1,0 +1,126 @@
+<div class="card">
+
+  <p-button
+    label="Add Product"
+    icon="pi pi-plus"
+    class="mb-5"
+    (click)="visibleAddForm = true"/>
+
+
+  <p-table
+    [rowHover]="true"
+    [value]="customers" [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Birthday</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th style="width: 1rem"></th>
+        <th style="width: 1rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-customer>
+      <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.lastName }}</td>
+        <td>{{ customer.birthday }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>
+          <p-button
+            severity="primary"
+            icon="pi pi-pencil"
+            (click)="onEditCustomer(customer)">
+          </p-button>
+        </td>
+
+        <td>
+          <p-button
+            severity="danger"
+            icon="pi pi-minus"
+            (click)="deleteCustomer(customer.id)">
+          </p-button>
+        </td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!--  Formularios -->
+  <!--  Formulario para editar el producto -->
+  <p-dialog header="Edit Product {{selectedCustomer.name}} " [modal]="true" [(visible)]="visibleEditForm" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="nameC" class="font-semibold w-6rem">Name</label>
+      <input [disabled]="true"  [(ngModel)]="customerToEdit.name" [value]="selectedCustomer.name" pInputText id="nameC" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="lastNameC" class="font-semibold w-6rem">Last Name</label>
+      <input [(ngModel)]="customerToEdit.lastName" [value]="selectedCustomer.lastName" pInputText id="lastNameC" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="birthdayC" class="font-semibold w-6rem">Birthday</label>
+      <input [(ngModel)]="customerToEdit.birthday" [value]="selectedCustomer.birthday" pInputText id="birthdayC" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="emailC" class="font-semibold w-6rem">Email</label>
+      <input [(ngModel)]="customerToEdit.email" [value]="selectedCustomer.email" pInputText id="emailC" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="phoneC" class="font-semibold w-6rem">Phone</label>
+      <input [(ngModel)]="customerToEdit.phone" [value]="selectedCustomer.phone" pInputText id="phoneC" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
+      <p-button label="Save" (click)="updateCustomer()" />
+    </div>
+  </p-dialog>
+
+  <!--  Formulario para agregar un producto -->
+  <p-dialog header="Add Customer" [modal]="true" [(visible)]="visibleAddForm" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="name" class="font-semibold w-6rem">Name</label>
+      <input [(ngModel)]="customerToAdd.name" pInputText id="name" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mt-2 mb-5">
+      <label for="last" class="font-semibold w-6rem">Last Name</label>
+      <input [(ngModel)]="customerToAdd.lastName" pInputText id="last" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="birthday" class="font-semibold w-6rem">Birthday</label>
+      <input [(ngModel)]="customerToAdd.birthday" pInputText id="birthday" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="email" class="font-semibold w-6rem">Email</label>
+      <input [(ngModel)]="customerToAdd.email" pInputText id="email" class="flex-auto" autocomplete="off" />
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="phone" class="font-semibold w-6rem">Phone</label>
+      <input [(ngModel)]="customerToAdd.phone" pInputText id="phone" class="flex-auto" autocomplete="off" />
+    </div>
+
+
+    <div class="flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
+      <p-button label="Save" (click)="addCustomer()" />
+    </div>
+  </p-dialog>
+  <p-toast/>
+
+</div>
+
+
+
