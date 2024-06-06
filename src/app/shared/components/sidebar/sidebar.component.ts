@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, SharedModule} from "primeng/api";
 import {MenuModule} from "primeng/menu";
-import {Router} from "@angular/router";
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,
