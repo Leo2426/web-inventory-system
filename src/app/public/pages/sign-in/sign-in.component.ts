@@ -7,6 +7,7 @@ import {User} from "../../../auth/model/user";
 import {AuthService} from "../../../auth/services/auth.service";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-sign-in',
@@ -16,7 +17,8 @@ import {ToastModule} from "primeng/toast";
     FormsModule,
     ChipsModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    RouterLink
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css'
