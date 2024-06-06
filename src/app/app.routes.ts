@@ -4,14 +4,15 @@ import {InventoryComponent} from "./inventory/pages/inventory/inventory.componen
 import {PageNotFoundComponent} from "./public/pages/page-not-found/page-not-found.component";
 import {SalesComponent} from "./sales/pages/sales/sales.component";
 import {CustomersComponent} from "./customers/pages/customers/customers.component";
+import {SignInComponent} from "./public/pages/sign-in/sign-in.component";
 
 
 export const routes: Routes = [
   {path: 'home', component: HomeComponent},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'sign-in', component: SignInComponent},
+  {path: '', redirectTo: 'sign-in', pathMatch: 'full'},
   {path: 'inventory', component: InventoryComponent},
   {path: 'sales', component: SalesComponent},
   {path: 'customers', component: CustomersComponent},
   {path: '**', component: PageNotFoundComponent}
-
 ];

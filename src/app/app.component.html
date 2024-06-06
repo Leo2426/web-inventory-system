@@ -1,17 +1,24 @@
-<app-toolbar/>
+@if (!authenticated){
+  <app-sign-in/>
+}
 
-<div class="grid" >
+@else {
+  <app-toolbar/>
 
-  <div class="col-4 lg:col-2">
-    <app-sidebar/>
+  <div class="grid" >
+
+    <div class="col-4 lg:col-2">
+      <app-sidebar/>
+    </div>
+
+
+    <div class="col-8 lg:col">
+      <router-outlet/>
+    </div>
+
   </div>
+}
 
-
-  <div class="col-8 lg:col">
-    <router-outlet/>
-  </div>
-
-</div>
 
 
 
