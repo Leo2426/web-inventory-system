@@ -8,6 +8,8 @@ import {TableModule} from "primeng/table";
 import {Sale} from "../../model/sale";
 import {SalesService} from "../../services/sales.service";
 import {ToastModule} from "primeng/toast";
+import {Product} from "../../../inventory/model/product";
+import {ProductsService} from "../../../inventory/services/products.service";
 @Component({
   selector: 'app-table-sales',
   standalone: true,
@@ -29,33 +31,31 @@ export class TableSalesComponent implements OnInit {
   sales: Sale[] = [];
   selectedSale: Sale = {} as Sale;
   saleToEdit: Sale = {} as Sale;
-  saleToAdd: Sale = {} as Sale;
-  currentDate: string = '';
+  saleToAdd:{
+    productId: number,
+    quantity: number
+  }[] = [] ;
+  products: Product[] = [];
 
-  constructor(private saleService: SalesService, private messageService: MessageService) {
-    this.getCurrentDate();
-    this.saleToAdd = {
-      name: '',
-      saleDate: this.currentDate,
-      totalCost: 1
-    };
+  constructor(private productService: ProductsService, private saleService: SalesService, private messageService: MessageService) {
+    this.saleToAdd = [
+      {
+        "productId": 1,
+        "quantity": 1,
+      }
+    ];
   }
 
   ngOnInit() {
     this.saleService.getAll().subscribe((response: any) => {
       this.sales = response;
     })
+
+    this.productService.getAll().subscribe((response: any) => {
+      this.products = response;
+    })
   }
 
-  getCurrentDate() {
-    const date = new Date();
-    // fecha actual para generar la venta
-    this.currentDate = date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-  }
 
   updateSale() {
     this.saleService.update(this.saleToEdit.id, this.saleToEdit).subscribe((response: any) => {
@@ -70,11 +70,11 @@ export class TableSalesComponent implements OnInit {
     });
   }
 
-  onEditSale(sale: Sale) {
-    this.saleToAdd = sale;
-    this.saleToEdit = {...sale};
-    this.visibleEditForm = true;
-  }
+  // onEditSale(sale: Sale) {
+  //   this.saleToAdd = sale;
+  //   this.saleToEdit = {...sale};
+  //   this.visibleEditForm = true;
+  // }
 
   deleteSale(name: string) {
     this.saleService.delete(name).subscribe(() => {
@@ -85,7 +85,7 @@ export class TableSalesComponent implements OnInit {
   addSale() {
     this.saleService.create(this.saleToAdd).subscribe((response: any) => {
       this.sales.push(response);
-      this.messageService.add({severity: 'success', summary: 'Success', detail: `Sale ${this.saleToAdd.name} added successfully!` });
+      this.messageService.add({severity: 'success', summary: 'Success', detail: `Sale ${this.saleToAdd} added successfully!` });
     })
 
     this.visibleAddForm = false;
