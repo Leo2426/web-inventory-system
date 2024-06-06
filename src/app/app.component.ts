@@ -4,11 +4,12 @@ import {SidebarModule} from "primeng/sidebar";
 import {SidebarComponent} from "./shared/components/sidebar/sidebar.component";
 import {ToolbarComponent} from "./shared/components/toolbar/toolbar.component";
 import {SignInComponent} from "./public/pages/sign-in/sign-in.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SidebarModule, SidebarComponent, ToolbarComponent, SignInComponent],
+  imports: [RouterOutlet, SidebarModule, SidebarComponent, ToolbarComponent, SignInComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
