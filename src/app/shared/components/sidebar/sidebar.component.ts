@@ -20,7 +20,14 @@ export class SidebarComponent implements OnInit{
       { label: 'Home', icon: 'pi pi-home', route: '/home' },
       { label: 'Inventory', icon: 'pi pi-box', route: '/inventory' },
       { label: 'Sales', icon: 'pi pi-shopping-cart', route: '/sales' },
-      { label: 'Customers', icon: 'pi pi-users', route: '/customers' }
+      { label: 'Customers', icon: 'pi pi-users', route: '/customers' },
+      { style: {'margin-top': '2rem'}, label: 'Log Out', icon: 'pi pi-sign-out', command: () => this.logout()},
     ];
   }
+
+  logout() {
+    localStorage.setItem('authenticated', 'false');
+    location.href = '/sign-in';
+  }
+
 }
