@@ -76,9 +76,9 @@ export class TableSalesComponent implements OnInit {
   //   this.visibleEditForm = true;
   // }
 
-  deleteSale(name: string) {
-    this.saleService.delete(name).subscribe(() => {
-      this.sales = this.sales.filter((sale) => sale.name !== name);
+  deleteSale(id: number) {
+    this.saleService.delete(id).subscribe(() => {
+      this.sales = this.sales.filter((sale) => sale.id !== id);
     });
   }
 
