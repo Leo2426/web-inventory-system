@@ -21,6 +21,7 @@ import {NgOptimizedImage} from "@angular/common";
 })
 export class ToolbarComponent implements OnInit{
   items: MenuItem[] | undefined;
+  userName: string = '';
 
   ngOnInit() {
     this.items = [
@@ -33,5 +34,9 @@ export class ToolbarComponent implements OnInit{
         icon: 'pi pi-times'
       }
     ];
+
+    //obtener el user como objeto
+    const user = localStorage.getItem('user');
+    this.userName = user ? JSON.parse(user).name : '';
   }
 }
