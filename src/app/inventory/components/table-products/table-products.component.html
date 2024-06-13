@@ -18,8 +18,7 @@
         <th>Cost</th>
         <th>Price</th>
         <th>Discount</th>
-        <th>Initial Stock</th>
-        <th>Current Stock</th>
+        <th>Stock</th>
         <th>User Id</th>
         <th style="width: 1rem"></th>
         <th style="width: 1rem"></th>
@@ -33,7 +32,6 @@
         <td>{{ product.realPrice }}</td>
         <td>{{ product.discount }}</td>
         <td>{{ product.stock }}</td>
-        <td>{{ product.currentStock }}</td>
         <td>{{ product.userId }}</td>
         <td>
           <p-button
@@ -78,10 +76,6 @@
       <input [(ngModel)]="productToEdit.stock" [value]="selectedProduct.stock" pInputText id="stock" class="flex-auto" autocomplete="off" />
     </div>
 
-    <div class="flex align-items-center gap-3 mb-5">
-      <label for="currentStock" class="font-semibold w-6rem">Current Stock</label>
-      <input [(ngModel)]="productToEdit.currentStock" [value]="selectedProduct.currentStock" pInputText id="currentStock" class="flex-auto" autocomplete="off" />
-    </div>
 
     <div class="flex justify-content-end gap-2">
       <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
@@ -116,13 +110,8 @@
       <input [(ngModel)]="productToAdd.stock" pInputText id="asdsd" class="flex-auto" autocomplete="off" />
     </div>
 
-    <div class="flex align-items-center gap-3 mb-5">
-      <label for="currentStock" class="font-semibold w-6rem">Actual Stock</label>
-      <input [(ngModel)]="productToAdd.currentStock" pInputText id="asdasd" class="flex-auto" autocomplete="off" />
-    </div>
-
     <div class="flex justify-content-end gap-2">
-      <p-button label="Cancel" severity="secondary" (click)="visibleEditForm =false" />
+      <p-button label="Cancel" severity="secondary" (click)="visibleAddForm =false" />
       <p-button label="Save" (click)="addProduct()" />
     </div>
   </p-dialog>
