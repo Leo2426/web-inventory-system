@@ -1,0 +1,11 @@
+<app-toolbar *ngIf="authenticated"></app-toolbar>
+
+<div class="grid">
+  <div *ngIf="authenticated" class="col-4 lg:col-2">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <div class="col-8 lg:col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

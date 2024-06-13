@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SidebarComponent} from "../../../shared/components/sidebar/sidebar.component";
+import {SidebarComponent} from "../sidebar/sidebar.component";
 import {ButtonModule} from "primeng/button";
 import {SalesService} from "../../../sales/services/sales.service";
 import {Sale} from "../../../sales/model/sale";

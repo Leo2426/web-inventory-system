@@ -4,7 +4,6 @@ import {FormsModule} from "@angular/forms";
 import {ChipsModule} from "primeng/chips";
 import {ButtonModule} from "primeng/button";
 import {User} from "../../../auth/model/user";
-import {AuthService} from "../../../auth/services/auth.service";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {RouterLink} from "@angular/router";
@@ -26,27 +25,29 @@ import {RouterLink} from "@angular/router";
 export class SignInComponent {
   userName: String;
   password: String;
-  users: User[] = [];
+  users: User[] = [
+    { name: 'admin', lastName: 'adminLastName', password: '123', email: 'admin@gmail.com'},
+  ];
 
 
-  constructor(private authService: AuthService, private messageService: MessageService) {
+  constructor( private messageService: MessageService) {
     //setear authenticated a false
     localStorage.setItem('authenticated', 'false');
 
-    //recargar la pagina solo 1 vez
-    if (localStorage.getItem('reloaded') === 'true') {
-      localStorage.setItem('reloaded', 'false');
-      location.reload();
-    } else {
-      localStorage.setItem('reloaded', 'true');
-    }
+    // //recargar la pagina solo 1 vez
+    // if (localStorage.getItem('reloaded') === 'true') {
+    //   localStorage.setItem('reloaded', 'false');
+    //   location.reload();
+    // } else {
+    //   localStorage.setItem('reloaded', 'true');
+    // }
 
-    this.userName = '';
-    this.password = '';
+    this.userName = 'admin';
+    this.password = '123';
 
-    this.authService.getAll().subscribe((response: any) => {
-      this.users = response;
-    })
+    // this.authService.getAll().subscribe((response: any) => {
+    //   this.users = response;
+    // })
 
   }
 
