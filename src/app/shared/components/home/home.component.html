@@ -1,6 +1,31 @@
 <h1 >Home</h1>
 
-<p-card  header="Total Sales" [style]="{width: '20rem'}" >
-  <p class="mt-0" >Total sales: {{totalSales}}  </p>
-</p-card>
+<section class="flex">
+
+  <div class="col-6 flex flex-wrap gap-5" >
+    <p-card  header="Total Sales" [style]="{width: '20rem'}" >
+      <p class="mt-0" >s/. {{totalSales}}</p>
+    </p-card>
+
+    <p-card  header="Quantity of Products" [style]="{width: '20rem'}" >
+      <p class="mt-0" >{{totalProducts}}  </p>
+    </p-card>
+
+    <p-card  header="Quantity of Customers" [style]="{width: '20rem'}" >
+      <p class="mt-0" > {{totalCustomers}}  </p>
+    </p-card>
+
+  </div>
+
+  <div class="col-6">
+    <h2>Stock</h2>
+    <div class="card flex justify-content-center">
+      <p-chart class="w-9" type="pie" [data]="data" [options]="options" />
+    </div>
+  </div>
+
+
+</section>
+
+
 
