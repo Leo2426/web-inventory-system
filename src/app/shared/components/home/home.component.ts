@@ -20,15 +20,16 @@ import {RouterLink} from "@angular/router";
 })
 export class HomeComponent implements OnInit{
   totalSales: number = 0;
-  constructor(private saleService: SalesService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.saleService.getAll().subscribe((response: any) => {
-      this.totalSales = response.reduce((acc: number, sale: any) => {
-        return acc + sale.totalCost;
-      }, 0);
-    })
+    this.getTotalSales();
   }
 
+  private getTotalSales() {
+    //obtener todas las ventas del local storage y sumar el totalCost
+    const sales: Sale[] = JSON.parse(localStorage.getItem('sales') || '[]');
+    this.totalSales = sales.map((s: Sale) => s.totalCost).reduce((a, b) => a + b, 0);
+  }
 }
