@@ -1,27 +1,31 @@
-# EasyInventoryFront
+# Sistema Básico de Inventario
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+Un sistema básico de inventario desarrollado en Angular que permite
+gestionar productos, realizar ventas y controlar el stock. 
+Este proyecto está diseñado para ser una solución simple y efectiva 
+para pequeñas empresas que necesitan llevar un control de su 
+inventario.
 
-## Development server
+## Características
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Gestión de productos: Agregar, editar y eliminar productos.
+- Control de stock: Verificar el stock actual y actualizar las cantidades.
+- Registro de ventas: Realizar y registrar ventas de productos.
+- Almacenamiento local: Guardar y recuperar datos desde el almacenamiento local del navegador.
 
-## Code scaffolding
+## Tecnologías Utilizadas
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [Angular](https://angular.io/)
+- [PrimeNG](https://www.primefaces.org/primeng/)
+- [RxJS](https://rxjs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML)
+- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [Node.js](https://nodejs.org/) (para la gestión del entorno de desarrollo)
 
-## Build
+## Requisitos Previos
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- [Node.js](https://nodejs.org/) (incluye npm)
+- [Angular CLI](https://angular.io/cli)
