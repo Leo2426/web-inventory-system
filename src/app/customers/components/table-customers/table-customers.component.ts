@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {CustomersService} from "../../services/customers.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Customer} from "../../model/customer";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
@@ -24,66 +23,103 @@ import {ToastModule} from "primeng/toast";
   templateUrl: './table-customers.component.html',
   styleUrl: './table-customers.component.css'
 })
-export class TableCustomersComponent implements OnInit{
-    customers: Customer[] = [];
-    visibleAddForm: boolean = false;
-    visibleEditForm: boolean = false;
-    selectedCustomer: Customer = {} as Customer;
-    customerToAdd: Customer;
-    customerToEdit: Customer = {} as Customer;
-    ngOnInit(): void {
-        this.getAllCustomers();
+export class TableCustomersComponent implements OnInit, OnDestroy {
+  customers: Customer[] = [];
+  visibleAddForm: boolean = false;
+  visibleEditForm: boolean = false;
+  selectedCustomer: Customer = {} as Customer;
+  customerToAdd: Customer;
+  customerToEdit: Customer = {} as Customer;
+
+  ngOnInit(): void {
+    this.getAllCustomers();
+  }
+
+  constructor(private messageService: MessageService) {
+    this.customerToAdd = {
+      name: '',
+      lastName: '',
+      birthday: '',
+      email: '',
+      phone: ''
+    };
+
+    const initialCustomers: Customer[] = [
+      {
+        id: 1,
+        name: 'Gerardo',
+        lastName: 'Martinez',
+        birthday: '2021-09-01',
+        email: 'gerardo@gmail.com',
+        phone: '909292873'
+      },
+      {
+        id: 2,
+        name: 'Maria',
+        lastName: 'Gonzalez',
+        birthday: '2021-09-02',
+        email: 'maria@gmail.com',
+        phone: '9920187272'
+      }
+    ];
+
+    //verificar si customers en el local storage es null, entonces setear customers
+    if (!localStorage.getItem('customers')) {
+      localStorage.setItem('customers', JSON.stringify(initialCustomers));
     }
 
-    constructor(private customersService: CustomersService, private messageService: MessageService) {
-        this.customerToAdd = {
-            name: '',
-            lastName: '',
-            birthday: '',
-            email: '',
-            phone: ''
-        };
-    }
+    this.getAllCustomers();
 
-    getAllCustomers() {
-        this.customersService.getAll().subscribe((response: any) => {
-            this.customers = response;
-        });
-    }
+  }
+
+  ngOnDestroy(): void {
+    localStorage.setItem('customers', JSON.stringify(this.customers));
+  }
+
+  getAllCustomers() {
+    this.customers = JSON.parse(localStorage.getItem('customers') || '[]');
+  }
 
 
   onEditCustomer(customer: Customer) {
     this.selectedCustomer = customer;
-    this.customerToEdit= {...customer};
+    this.customerToEdit = {...customer};
     this.visibleEditForm = true;
   }
 
   updateCustomer() {
-    this.customersService.update(this.customerToEdit.id, this.customerToEdit).subscribe((response: any) => {
-      this.customers = this.customers.map((customer) => {
-        if (customer.id === response.id) {
-          customer = response;
-        }
-        return customer;
-
-      });
-      console.log(response);
+    //actualizar el customer
+    this.customers = this.customers.map((customer: Customer) => {
+      if (customer.id === this.customerToEdit.id) {
+        return this.customerToEdit;
+      }
+      return customer;
     });
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: `Customer ${this.customerToEdit.name} updated successfully!`
+    });
+
     this.visibleEditForm = false;
   }
 
   addCustomer() {
-    this.customersService.create(this.customerToAdd).subscribe((response: any) => {
-      this.customers.push({...response})
-      this.messageService.add({severity: 'success', summary: 'Success', detail: `Customer ${this.customerToAdd.name} added successfully!` });
+    //agregar el customer al array de customers\
+    this.customerToAdd.id = this.customers.length + 1;
+    this.customers.push(this.customerToAdd);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: `Customer ${this.customerToAdd.name} added successfully!`
     });
+
     this.visibleAddForm = false;
   }
 
   deleteCustomer(id: number) {
-    this.customersService.delete(id).subscribe(() => {
-      this.getAllCustomers();
-    });
+    this.customers = this.customers.filter((customer: Customer) => customer.id !== id);
   }
 
 }
