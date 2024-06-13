@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {InputTextModule} from "primeng/inputtext";
@@ -6,10 +6,9 @@ import {PaginatorModule} from "primeng/paginator";
 import {MessageService, SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {Sale} from "../../model/sale";
-import {SalesService} from "../../services/sales.service";
 import {ToastModule} from "primeng/toast";
 import {Product} from "../../../inventory/model/product";
-import {ProductsService} from "../../../inventory/services/products.service";
+
 @Component({
   selector: 'app-table-sales',
   standalone: true,
@@ -25,49 +24,68 @@ import {ProductsService} from "../../../inventory/services/products.service";
   templateUrl: './table-sales.component.html',
   styleUrl: './table-sales.component.css'
 })
-export class TableSalesComponent implements OnInit {
+export class TableSalesComponent implements OnInit, OnDestroy {
   visibleEditForm: boolean = false;
   visibleAddForm: boolean = false;
   sales: Sale[] = [];
   selectedSale: Sale = {} as Sale;
   saleToEdit: Sale = {} as Sale;
-  saleToAdd:{
-    productId: number,
-    quantity: number
-  }[] = [] ;
+  saleToAdd = {
+    productId: 0,
+    quantity: 0,
+  };
+
   products: Product[] = [];
 
-  constructor(private productService: ProductsService, private saleService: SalesService, private messageService: MessageService) {
-    this.saleToAdd = [
+  constructor(private messageService: MessageService) {
+    const initialSales: Sale[] = [
       {
-        "productId": 1,
-        "quantity": 1,
+        id: 1,
+        name: 'sale 1',
+        saleDate: '2021-09-01',
+        totalCost: 100,
+      },
+      {
+        id: 2,
+        name: 'sale 2',
+        saleDate: '2021-09-02',
+        totalCost: 200,
+      },
+      {
+        id: 3,
+        name: 'sale 3',
+        saleDate: '2021-09-03',
+        totalCost: 300,
       }
     ];
+
+    if (!localStorage.getItem('sales')) {
+      localStorage.setItem('sales', JSON.stringify(initialSales));
+    }
+    this.resetSaleToAdd();
+  }
+
+  ngOnDestroy(): void {
+    localStorage.setItem('sales', JSON.stringify(this.sales));
   }
 
   ngOnInit() {
-    this.saleService.getAll().subscribe((response: any) => {
-      this.sales = response;
-    })
-
-    this.productService.getAll().subscribe((response: any) => {
-      this.products = response;
-    })
+    this.products = JSON.parse(localStorage.getItem('products') || '{}');
+    this.getAllSales();
   }
 
 
   updateSale() {
-    this.saleService.update(this.saleToEdit.id, this.saleToEdit).subscribe((response: any) => {
-      this.sales = this.sales.map((sale) => {
-        if (sale.name === response.name) {
-          sale = response;
-        }
-        return sale;
-      });
-      this.visibleEditForm = false;
-      this.messageService.add({severity: 'success', summary: 'Success', detail: `Sale ${this.saleToEdit.name} updated successfully!` });
+
+
+
+    this.visibleEditForm = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: `Sale ${this.saleToEdit.name} updated successfully!`
     });
+
   }
 
   // onEditSale(sale: Sale) {
@@ -77,17 +95,40 @@ export class TableSalesComponent implements OnInit {
   // }
 
   deleteSale(id: number) {
-    this.saleService.delete(id).subscribe(() => {
-      this.sales = this.sales.filter((sale) => sale.id !== id);
-    });
+    this.sales = this.sales.filter((sale: Sale) => sale.id !== id);
   }
 
   addSale() {
-    this.saleService.create(this.saleToAdd).subscribe((response: any) => {
-      this.sales.push(response);
-      this.messageService.add({severity: 'success', summary: 'Success', detail: `Sale ${this.saleToAdd} added successfully!` });
-    })
-
+    this.sales.push(this.saleToAddToSaleAssembler(this.saleToAdd));
     this.visibleAddForm = false;
   }
+
+  resetSaleToAdd() {
+     this.saleToAdd = {
+      productId: 0,
+      quantity: 0,
+      };
+  }
+
+  private getAllSales() {
+    this.sales = JSON.parse(localStorage.getItem('sales') || '{}');
+  }
+
+  private saleToAddToSaleAssembler(saleToAdd: { productId: number, quantity:number }): Sale {
+
+    const product = this.products.find((product: Product) => product.id === saleToAdd.productId);
+
+    //restar la cantidad del producto del local storage
+    product!.stock = product!.stock - saleToAdd.quantity;
+    localStorage.setItem('products', JSON.stringify(this.products));
+
+    return {
+      id: this.sales[this.sales.length - 1].id + 1,
+      name: 'sale ' + (this.sales.length + 1),
+      saleDate: new Date().toISOString().slice(0, 10),
+      //el total cost es la multiplicacion del precio unitario por la cantidad
+      totalCost: product!.realPrice * saleToAdd.quantity,
+    };
+  }
+
 }
